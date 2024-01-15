@@ -4,19 +4,19 @@ app = Flask(__name__)
 
 @app.route("/")
 def homepage():
-    return "Catálogo de Veículos à Venda"
+    return render_template("homepage.html")
 
 @app.route("/login")
 def login():
-    return "Login do Usuário"
+    return render_template("login.html")
 
-@app.route("/cadastro")
+@app.route("/cadastroUsuario")
 def cadastro():
-    return "Cadastro de Usuário"
+    return render_template("cadastroUsuario.html")
 
-@app.route("/catalogo")
+@app.route("/editarCatalogo")
 def catalogo():
-    return "Cadastro de Veículos"
+    return render_template("editarCatalogo.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
