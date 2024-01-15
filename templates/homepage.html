@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Carros Usados</title>
+    <title>
+        {% block titulo %}
+        Carros Usados
+        {% endblock %}
+    </title>
 </head>
+
+{% block body %}
 <body>
 <h1>Catálogo de Veículos à Venda</h1>
 <h2>Menu</h2>
@@ -13,4 +19,6 @@
 <section2>Carro2</section2>
 <section3>Carro3</section3>
 </body>
+{% endblock %}
+
 </html>

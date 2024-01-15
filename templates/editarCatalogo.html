@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "homepage.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Catálogo</title>
-</head>
+{% block titulo %}
+Editar Catálogo
+{% endblock %}
 
-<body>
+{% block body %}
     <h1>Editar Catálogo - Usuário: {{ usuario }}</h1>
     <a href="{{ url_for('homepage') }}">Logout</a>
-</body>
-
-</html>
+{% endblock %}
