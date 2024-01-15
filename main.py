@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
 
@@ -14,9 +14,9 @@ def login():
 def cadastro():
     return render_template("cadastroUsuario.html")
 
-@app.route("/editarCatalogo")
-def catalogo():
-    return render_template("editarCatalogo.html")
+@app.route("/editarCatalogo/<usuario>")
+def catalogo(usuario):
+    return render_template("editarCatalogo.html", usuario=usuario)
 
 if __name__ == "__main__":
     app.run(debug=True)
