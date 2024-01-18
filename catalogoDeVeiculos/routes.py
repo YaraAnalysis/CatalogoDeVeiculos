@@ -1,7 +1,7 @@
 # cria as rotas do site (links)
 from flask import render_template, url_for, redirect
 from catalogoDeVeiculos import app, database, bcrypt
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from catalogoDeVeiculos.forms import FormLogin, FormCadastroUsuario
 from catalogoDeVeiculos.models import Usuario
 
@@ -13,6 +13,12 @@ def homepage():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     formlogin = FormLogin()
+    if formlogin.validate_on_submit():
+        usuario = Usuario.query.filter_by(email=formlogin.email.data).first()
+        # verifica se a senha está corrreta
+        if usuario and bcrypt.check_password_hash(usuario.senha, formlogin.senha.data):
+            login_user(usuario)
+            return redirect(url_for("catalogo", usuario=usuario.username))
     return render_template("login.html", form=formlogin)
 
 @app.route("/cadastroUsuario", methods=["GET", "POST"])
@@ -28,7 +34,15 @@ def cadastro():
         return redirect(url_for("catalogo", usuario=usuario.username))
     return render_template("cadastroUsuario.html", form=formCadastroUsuario)
 
+
+#verificar se é necessário deixar esse /usuario
 @app.route("/editarCatalogo/<usuario>")
 @login_required
 def catalogo(usuario):
     return render_template("editarCatalogo.html", usuario=usuario)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("homepage"))
