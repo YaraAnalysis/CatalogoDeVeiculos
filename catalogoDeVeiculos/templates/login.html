@@ -7,6 +7,7 @@ Login
 {% block body %}
     <h1>Login do Usuário</h1>
 
+    {% block formulario %}
     <form method="POST">
     {{ form.csrf_token }}
         {{ form.email.label() }}
@@ -18,4 +19,5 @@ Login
         {{ form.botao_confirmacao() }}
 
     </form>
+    {% endblock %}
 {% endblock %}
