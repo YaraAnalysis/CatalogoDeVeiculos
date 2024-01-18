@@ -5,5 +5,17 @@ Login
 {% endblock %}
 
 {% block body %}
-<h1>Login do Usuário</h1>
+    <h1>Login do Usuário</h1>
+
+    <form method="POST">
+    {{ form.csrf_token }}
+        {{ form.email.label() }}
+        {{ form.email() }}
+
+        {{ form.senha.label() }}
+        {{ form.senha() }}
+
+        {{ form.botao_confirmacao() }}
+
+    </form>
 {% endblock %}
