@@ -1,8 +1,9 @@
 # cria as rotas do site (links)
-from flask import render_template, url_for
-from catalogoDeVeiculos import app
-from flask_login import login_required
+from flask import render_template, url_for, redirect
+from catalogoDeVeiculos import app, database, bcrypt
+from flask_login import login_required, login_user, logout_user
 from catalogoDeVeiculos.forms import FormLogin, FormCadastroUsuario
+from catalogoDeVeiculos.models import Usuario
 
 
 @app.route("/")
@@ -16,8 +17,16 @@ def login():
 
 @app.route("/cadastroUsuario", methods=["GET", "POST"])
 def cadastro():
-    formCaddastroUsuario = FormCadastroUsuario()
-    return render_template("cadastroUsuario.html", form=formCaddastroUsuario)
+    formCadastroUsuario = FormCadastroUsuario()
+    if formCadastroUsuario.validate_on_submit():
+        senha = bcrypt.generate_password_hash(formCadastroUsuario.senha.data)
+        usuario = Usuario(username=formCadastroUsuario.username.data,
+                          email=formCadastroUsuario.email.data, senha=senha)
+        database.session.add(usuario)
+        database.session.commit()
+        login_user(usuario, remember=True)
+        return redirect(url_for("catalogo", usuario=usuario.username))
+    return render_template("cadastroUsuario.html", form=formCadastroUsuario)
 
 @app.route("/editarCatalogo/<usuario>")
 @login_required
