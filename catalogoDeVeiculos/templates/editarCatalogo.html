@@ -5,6 +5,12 @@ Editar Catálogo
 {% endblock %}
 
 {% block body %}
-    <h1>Editar Catálogo - Usuário: {{ usuario }}</h1>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <h1>Painel de Controle - {{ usuario.username }}</h1>
+    <h2>Listagem dos veículos</h2>
+    <h2>Incluir um veículo</h2>
+    <h2>Alterar um veículo</h2>
+    <h2>Deletar um veículo</h2>
+    <button>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </button>
 {% endblock %}

@@ -18,7 +18,7 @@ def login():
         # verifica se a senha está corrreta
         if usuario and bcrypt.check_password_hash(usuario.senha, formlogin.senha.data):
             login_user(usuario)
-            return redirect(url_for("catalogo", usuario=usuario.username))
+            return redirect(url_for("catalogo", id_usuario=usuario.id))
     return render_template("login.html", form=formlogin)
 
 @app.route("/cadastroUsuario", methods=["GET", "POST"])
@@ -31,14 +31,15 @@ def cadastro():
         database.session.add(usuario)
         database.session.commit()
         login_user(usuario, remember=True)
-        return redirect(url_for("catalogo", usuario=usuario.username))
+        return redirect(url_for("catalogo", id_usuario=usuario.id))
     return render_template("cadastroUsuario.html", form=formCadastroUsuario)
 
 
 #verificar se é necessário deixar esse /usuario
-@app.route("/editarCatalogo/<usuario>")
+@app.route("/editarCatalogo/<id_usuario>")
 @login_required
-def catalogo(usuario):
+def catalogo(id_usuario):
+    usuario = Usuario.query.get((id_usuario))
     return render_template("editarCatalogo.html", usuario=usuario)
 
 @app.route("/logout")
