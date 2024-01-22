@@ -7,7 +7,9 @@ Editar Catálogo
 {% block body %}
     <h1>Painel de Controle - {{ usuario.username }}</h1>
     <h2>Listagem dos veículos</h2>
+    <img src="{{ url_for('static', filename='fotos_veiculos/default.png') }}">
     <h2>Incluir um veículo</h2>
+
     <h2>Alterar um veículo</h2>
     <h2>Deletar um veículo</h2>
     <button>
