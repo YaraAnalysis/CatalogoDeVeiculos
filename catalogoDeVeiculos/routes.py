@@ -2,8 +2,10 @@
 from flask import render_template, url_for, redirect
 from catalogoDeVeiculos import app, database, bcrypt
 from flask_login import login_required, login_user, logout_user, current_user
-from catalogoDeVeiculos.forms import FormLogin, FormCadastroUsuario
-from catalogoDeVeiculos.models import Usuario
+from catalogoDeVeiculos.forms import FormLogin, FormCadastroUsuario, FormCadastroVeiculo
+from catalogoDeVeiculos.models import Usuario, Veiculo
+import os
+from werkzeug.utils import secure_filename
 
 
 @app.route("/")
@@ -36,11 +38,27 @@ def cadastro():
 
 
 #verificar se é necessário deixar esse /usuario
-@app.route("/editarCatalogo/<id_usuario>")
+@app.route("/editarCatalogo", methods=["GET", "POST"])
 @login_required
-def catalogo(id_usuario):
-    usuario = Usuario.query.get((id_usuario))
-    return render_template("editarCatalogo.html", usuario=usuario)
+def catalogo():
+    formCadastroVeiculo = FormCadastroVeiculo()
+    if formCadastroVeiculo.validate_on_submit():
+        arquivo = formCadastroVeiculo.foto.data
+        nome_seguro = secure_filename(arquivo.filename)
+        caminho = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                               app.config["UPLOAD_FOLDER"], nome_seguro)
+        arquivo.save(caminho)
+        veiculo = Veiculo(nome=formCadastroVeiculo.nome.data,
+                          marca=formCadastroVeiculo.marca.data,
+                          modelo=formCadastroVeiculo.modelo.data,
+                          ano=formCadastroVeiculo.modelo.data,
+                          cor=formCadastroVeiculo.cor.data,
+                          preco=formCadastroVeiculo.preco.data,
+                          foto=nome_seguro)
+        database.session.add(veiculo)
+        database.session.commit()
+        return redirect(url_for("catalogo"))
+    return render_template("editarCatalogo.html", form=formCadastroVeiculo)
 
 @app.route("/logout")
 @login_required

@@ -5,10 +5,44 @@ Editar Catálogo
 {% endblock %}
 
 {% block body %}
-    <h1>Painel de Controle - {{ usuario.username }}</h1>
+    <h1>Painel de Controle</h1>
     <h2>Listagem dos veículos</h2>
-    <img src="{{ url_for('static', filename='fotos_veiculos/default.png') }}">
     <h2>Incluir um veículo</h2>
+    {% block formulario %}
+
+    {% if form %}
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+
+        {{ form.nome.label() }}
+        {{ form.nome() }}
+
+        {{ form.marca.label() }}
+        {{ form.marca() }}
+
+        {{ form.modelo.label() }}
+        {{ form.modelo() }}
+
+        {{ form.ano.label() }}
+        {{ form.ano() }}
+
+        {{ form.cor.label() }}
+        {{ form.cor() }}
+
+        {{ form.preco.label() }}
+        {{ form.preco() }}
+
+        {{ form.foto.label() }}
+        {{ form.foto() }}
+
+        {{ form.botao_confirmacao.label() }}
+        {{ form.botao_confirmacao() }}
+
+        <img src="{{ url_for('static', filename='fotos_veiculos/default.png') }}">
+    </form>
+    {% endif %}
+
+    {% endblock%}
 
     <h2>Alterar um veículo</h2>
     <h2>Deletar um veículo</h2>
